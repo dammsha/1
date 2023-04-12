@@ -4,7 +4,7 @@ import sqlite3
 meta_employee = {0: 'ФИО', 1: 'Зарплата', 2: 'Премия', 3: 'Формальная должность', 4: 'Отдел', 5: 'Признаки'}
 meta_projects = {0: 'Проект', 1: 'Наименование задачи', 2: 'Должность', 3: 'Стоимость', 4: 'Чистая стоимость',
                  5: 'Признаки'}
-meta_payment = {0: 'Дата', 1: 'Сотрудник', 2: 'Проект', 3: 'Наименование задачи', 4: 'Должность'}
+meta_payment = {0: 'Дата', 1: 'Сотрудник', 2: 'Проект', 3: 'Наименование задачи', 4: 'Должность', 5: 'Статус'}
 
 
 class DB_request():
@@ -12,7 +12,7 @@ class DB_request():
     def __init__(self):
         con = sqlite3.connect("FBD.sqlite3")
         cur = con.cursor()
-        cur.execute("SELECT * FROM employees")
+        cur.execute("""SELECT ФИО, Зарплата, Премия, "Формальная должность", Отдел, Признаки FROM employees""")
         row = cur.fetchall()
         self.employee_list = []
         for row in row:
@@ -22,7 +22,8 @@ class DB_request():
             self.employee_list.append(dict_temp)
 
 
-        cur.execute("SELECT * FROM projects")
+        cur.execute("""SELECT Проект, "Наименование задачи", Должность, Стоимость, "Чистая стоимость",
+                 Признаки FROM projects""")
         row = cur.fetchall()
         self.project_list = []
         for row in row:
@@ -32,7 +33,7 @@ class DB_request():
             self.project_list.append(dict_temp)
 
 
-        cur.execute("SELECT * FROM payments")
+        cur.execute("""SELECT Дата, Сотрудник, Проект, "Наименование задачи", Должность, Статус FROM payments""")
 
         row = cur.fetchall()
         self.payment_list = []

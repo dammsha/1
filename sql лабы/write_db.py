@@ -28,10 +28,10 @@ class Create_new_DB():
     def save_DB(self):
         con = sqlite3.connect("FBD.sqlite3")
         cur = con.cursor()
-        cur.execute('DELETE FROM payments')
+        cur.execute('DELETE FROM payments where Статус = 1')
         for payment in self.payment_list:
             cur.execute(f"""INSERT INTO payments VALUES
-        ('{payment['Дата']}',	'{payment['Сотрудник']}',	'{payment['Проект']}', '{payment['Наименование задачи']}', '{payment['Должность']}')
+        (NULL,'{payment['Дата']}',	'{payment['Сотрудник']}',	'{payment['Проект']}', '{payment['Наименование задачи']}', '{payment['Должность']}', 1)
                 """)
         con.commit()
 

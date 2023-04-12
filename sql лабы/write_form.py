@@ -1,11 +1,13 @@
 from openpyxl.workbook import Workbook
 from read_db_sql import meta_employee, meta_projects, meta_payment, DB_request
+from choose import Fill_DB
 
 
 class Create_data_form(DB_request):
 
     def __init__(self):
         super().__init__()
+        Fill_DB()
         self.wb = Workbook()
         ws = self.wb.active
         ws2 = self.wb.create_sheet()
@@ -43,7 +45,7 @@ class Create_data_form(DB_request):
             for colm in range(len(meta_projects)):
                 row_line2.append(row[meta_projects[colm]])
             row_line2.append(f'=A{counter}&B{counter}&C{counter}')
-            row_line2.append(f'=SUMIF(Выплаты!F:F,G{counter},Выплаты!G:G)')
+            row_line2.append(f'=SUMIF(Выплаты!G:G,G{counter},Выплаты!H:H)')
             row_line2.append(f'=E{counter}-H{counter}')
             ws2.append(row_line2)
         ws2.column_dimensions['G'].hidden = True
@@ -62,11 +64,15 @@ class Create_data_form(DB_request):
             row_line3 = []
             for colm in range(len(meta_payment)):
                 row_line3.append(row[meta_payment[colm]])
+            if row_line3[-1] == 1:
+                row_line3[-1] = 'Зарегистрированные выплаты'
+            else:
+                row_line3[-1] = 'Предлагаемые выплаты'
             row_line3.append(f'=C{counter}&D{counter}&E{counter}')
             row_line3.append(f'=VLOOKUP(B{counter},Сотрудники!$A:$F,2,0)+VLOOKUP(B{counter},Сотрудники!$A:$F,3,0)')
-            row_line3.append(f'=VLOOKUP(F{counter},Проекты!$G:$I,3,0)')
+            row_line3.append(f'=VLOOKUP(G{counter},Проекты!$G:$I,3,0)')
             ws3.append(row_line3)
-        ws3.column_dimensions['F'].hidden = True
+        ws3.column_dimensions['G'].hidden = True
 
 
 

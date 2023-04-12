@@ -11,10 +11,11 @@ class Form_request():
         self.payment_list = []
         if ws3.max_row > 1:
             for row in range(2, ws3.max_row + 1):
-                dict_res = {}
-                for meta_col in meta_payment:
-                    dict_res[meta_payment[meta_col]] = ws3[row][meta_col].value
-                self.payment_list.append(dict_res)
+                if ws3[row][5].value == 'Зарегистрированные выплаты':
+                    dict_res = {}
+                    for meta_col in meta_payment:
+                        dict_res[meta_payment[meta_col]] = ws3[row][meta_col].value
+                    self.payment_list.append(dict_res)
 
     def save(self):
         DB1 = Create_new_DB(payment_list=self.payment_list)
